@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --darker: rgb(14, 24, 24);
+    --dark: rgb(32, 58, 58);
+    --medium: rgb(50, 99, 99);
+    --light: #9fc1c1;
+
+    --green: rgb(85, 150, 85);
+    --yellow: rgb(194, 194, 107);
+    --gray: rgb(75, 75, 75);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--darker);
+}
+
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+}
+
+#container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: 1;
+    gap: 5px;
+    margin: 0;
+}
+
+.row {
+    display: flex;
+    min-height: 120px;
+    gap: 5px;
+}
+
+.letter {
+    border: 5px solid var(--dark);
+    color: var(--light);
+    font-family: 'Arial';
+    font-weight: bold;
+    line-height: 115px;
+    text-align: center;
+    font-size: 5rem;
+    width: 120px;
+    height: 120px;
+}
+
+#title {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%);
+    width: fit-content;
+    color: var(--light);
+    font-size: 25px;
+    font-family: 'Arial';
+}
+
+#end-page {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1000;
+    padding: 40px;
+    width: 40%;
+    min-height: 40%;
+    background-color: rgba(12, 12, 12, 0.9);
+    box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
+    color: white;
+    font-family: arial;
+    text-align: center;
+    font-size: 40px;
+}
+
+#end-page p {
+    margin: 0;
+}
+
+#end-page span {
+    color: var(--green);
+    font-weight: bold;
+}
+
+#end-page a {
+    text-decoration: none;
+    color: var(--light);
+    font-weight: bold;
+}
+
+#end-page a:hover,
+a:focus {
+    text-decoration: underline;
+}
