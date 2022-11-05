@@ -32,7 +32,6 @@
     --yellow: rgb(194, 194, 107);
     --gray: rgb(75, 75, 75);
 
-    --kb-unit: 2vw;
     --kb-gap: 10px;
 }
 
@@ -50,7 +49,6 @@ body {
     position: relative;
     display: flex;
     justify-content: center;
-    /* height: 100vh; */
 }
 
 #container {
@@ -81,11 +79,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 100%;
 }
 
 #keyboard {
-    position: absolute;
+    position: relative;
     bottom: 4vh;
     display: flex;
     flex-direction: column;
@@ -96,19 +94,21 @@ body {
 
 .keyboard-row {
     display: flex;
+    justify-content: center;
     gap: var(--kb-gap);
+    width: 95%;
 }
 
 .key {
-    width: calc(var(--kb-unit) * 2);;
-    height: calc(var(--kb-unit) * 2);
+    width: 10%;
+    max-width: 10vh;
     background-color: var(--dark);
     outline: none;
     border: none;
     border-radius: 10px;
     color: var(--light);
     font-weight: bold;
-    font-size: 1vw;
+    font-size: 1.6vw;
     cursor: pointer;
 }
 
@@ -118,13 +118,11 @@ body {
 }
 
 .long {
-    width: calc(var(--kb-unit) * 3);
-    height: calc(var(--kb-unit) * 2);
+    width: 15%;
 }
 
 .empty {
-    width: var(--kb-unit);
-    height: calc(var(--kb-unit) * 2);
+    width: 5%;
 }
 
 /* 4. MISC STYLES */
@@ -253,6 +251,7 @@ div.info-btn button:hover {
     padding: 40px;
     width: 40%;
     height: fit-content;
+    max-height: 80%;
     background-color: rgba(12, 12, 12, 0.9);
     box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
     color: var(--light);
@@ -261,6 +260,26 @@ div.info-btn button:hover {
     font-size: 2.5vh;
     color: white;
     word-wrap: break-word;
+    overflow: auto;
+}
+
+
+* {
+    scrollbar-width: auto;
+    scrollbar-color: var(--medium) none;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--dark);
+    border-radius: 10px;
 }
 
 #info-page h3 {
@@ -273,6 +292,24 @@ div.info-btn button:hover {
 #info-page a {
     color: var(--light);
 }
+
+.change-log {
+    margin-top: 100px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.change-log h1 {
+    font-size: 3.5vh;
+    margin: 0;
+}
+
+.change-log span {
+    color: var(--light);
+    font-size: 20px;
+}
+
+
 
 .info-exit {
     position: absolute;

@@ -43,6 +43,7 @@ function getColors(correct, guessed) {
         if (correct[i] == guessed[i]) {
             colors[i] = 'var(--green)';
             correctArray[correct.indexOf(guessed[i], 0)] = true;
+            greenLetters += correct[i];
         }
         else {
             colors[i] = 'var(--gray)';
@@ -84,9 +85,11 @@ function keyPressHandler(key) {
             for (let i = 0; i < 5; i++) {
                 rows[guess][i].style.setProperty('color', colors[i]);
                 rows[guess][i].style.setProperty('border-color', colors[i]);
-                keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
-                if (colors[i] == 'var(--yellow)') {
+                if (colors[i] == 'var(--yellow)' && !greenLetters.includes(currentInput[i])) {
+                    keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
                     keys[currentInput[i].toLowerCase()].style.setProperty('color', 'var(--darker)');
+                } else if (colors[i] == 'var(--green)' || colors[i] == 'var(--gray)'){
+                    keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
                 }
             }
             if (currentInput == correctWord) {          // check if won/ran out of guesses
@@ -138,9 +141,10 @@ const infoExit = document.querySelector('#info-exit');                  // hides
 
 let n = getRandomInt(0, words.length - 1);                              // generate random index to pick a random word
 let correctWord = words[n].toUpperCase();
-console.log('nie dla psa kielbasa');
+console.log(correctWord);
 let currentInput = '';                                                  // player input / guess
 let colors = [];
+let greenLetters = '';                                                  // string containing letters which are green. used for determining on-screen keyboard key colors
 let guess = 0;                                                          // guess counter (0-5)
 keys.enter = document.querySelector('#enter');
 keys.backspace = document.querySelector('#backspace');
