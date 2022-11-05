@@ -1,10 +1,28 @@
+/* --- TABLE OF CONTENTS ---
+
+    1. FUNCTIONS
+        1.1. getRandomInt()
+        1.2. displayLetters()
+        1.3. getColors()
+        1.4. keyPressHandler()
+        1.5. gameEnd()
+    2. VARIABLES
+    3. EVENT LISTENERS
+
+ --- TABLE OF CONTENTS --- */
+
+
+
+/* --- 1. FUNCTIONS --- */
+
+// 1.1
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// insert user inputed characters into the letter area
+// 1.2 - insert user inputed characters into the letter area
 function displayLetters() {
     for (let i = 0; i < 5; i++) {
         if (currentInput[i] === undefined) {
@@ -16,7 +34,7 @@ function displayLetters() {
     }
 }
 
-// check user guess with the correct word, return colors of letters
+// 1.3 - check user guess with the correct word, return colors of letters
 function getColors(correct, guessed) {
     let colors = [];
     let correctArray = [false, false, false, false, false];
@@ -41,61 +59,35 @@ function getColors(correct, guessed) {
     return colors;
 }
 
-// handle game end
-function gameEnd(outcome, guessAmount) {
-    if (outcome == 'win') {
-        endPage.style.setProperty('display', 'flex');
-        endPage.innerHTML = "<p style='color: var(--green); font-weight: bold;'>You won!</p><p>The correct word was <span class='correct-word'>" + correctWord + "</span></p><p>Guess amount: <span id='guess-amount'>" + Number(guessAmount + 1) + "</span></p><a href='index.html'>Play again</a>";
-    }
-    else if (outcome == 'lose') {
-        endPage.style.setProperty('display', 'flex');
-        endPage.innerHTML = "<p style='color: var(--red); font-weight: bold;'>You lost!</p><p>The correct word was <span class='correct-word'>" + correctWord + "</span></p><a href='index.html'>Play again</a>";
-    }
-    else {
-        console.log("Unknown game outcome '" + outcome + "'");
-    }
-}
-
-const rows = [];
-const title = document.querySelector('#title');                         // display above the game (ex. 'word is too short')
-const endPage = document.querySelector('#end-page')                     // displayed when the game is won/lost
-
-let n = getRandomInt(0, words.length - 1);                              // generate random index to pick a random word
-let correctWord = words[n].toUpperCase();
-console.log(correctWord);
-let currentInput = '';                                                  // player input / guess
-let colors = [];
-let guess = 0;                                                          // guess counter (0-5)
-
-// fill the array of html elements [row][letter]
-for (let i = 0; i < 6; i++) {
-    rows[i] = document.querySelectorAll('#container .row:nth-child(' + Number(i + 1) + ') .letter')
-}
-
-// when player holds a key down
-window.addEventListener('keydown', function(event) {
-    let key = event.key.toUpperCase();
+// 1.4 - handle keyboard key press / on-screen keyboard click
+function keyPressHandler(key) {
     let code = key.charCodeAt(0);
     if ((code >= 65 && code <= 90) && key.length === 1) {
-        title.innerHTML = "";
+        title.style.setProperty('display', 'none');
         if (currentInput.length < 5) {
             currentInput += key;
             displayLetters();
         }
     }
     else if (key == 'BACKSPACE') {
-        title.innerHTML = "";
+        title.style.setProperty('display', 'none');
         currentInput = currentInput.slice(0, -1);
         displayLetters();
     }
     else if (key == 'ENTER') {
         if (currentInput.length < 5) {
             title.innerHTML = "Word is too short";
+            title.style.setProperty('display', 'block');
         }
         else if (availableWords.includes(currentInput.toLowerCase())) {
             colors = getColors(correctWord, currentInput);
             for (let i = 0; i < 5; i++) {
                 rows[guess][i].style.setProperty('color', colors[i]);
+                rows[guess][i].style.setProperty('border-color', colors[i]);
+                keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
+                if (colors[i] == 'var(--yellow)') {
+                    keys[currentInput[i].toLowerCase()].style.setProperty('color', 'var(--darker)');
+                }
             }
             if (currentInput == correctWord) {          // check if won/ran out of guesses
                 gameEnd('win', guess);
@@ -113,6 +105,66 @@ window.addEventListener('keydown', function(event) {
         }
         else {
             title.innerHTML = "Not in word list";
+            title.style.setProperty('display', 'block');
         }
     }
-});
+}
+
+// 1.5 - handle game end
+function gameEnd(outcome, guessAmount) {
+    if (outcome == 'win') {
+        endPage.style.setProperty('display', 'flex');
+        endPage.innerHTML = "<p style='color: var(--green); font-weight: bold;'>You won!</p><p>The correct word was <span class='correct-word'>" + correctWord + "</span></p><p>Guess amount: <span id='guess-amount'>" + Number(guessAmount + 1) + "</span></p><a href='index.html'>Play again</a>";
+    }
+    else if (outcome == 'lose') {
+        endPage.style.setProperty('display', 'flex');
+        endPage.innerHTML = "<p style='color: var(--red); font-weight: bold;'>You lost!</p><p>The correct word was <span class='correct-word'>" + correctWord + "</span></p><a href='index.html'>Play again</a>";
+    }
+    else {
+        console.log("Unknown game outcome '" + outcome + "'");
+    }
+}
+
+/* --- 2. VARIABLES --- */
+
+const rows = [];
+const letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+const keys = {a: null, b: null, c: null, d: null, e: null, f: null, g: null, h: null, i: null, j: null, k: null, l: null, m: null, n: null, o: null, p: null, q: null, r: null, s: null, t: null, u: null, v: null, w: null, x: null, y: null, z: null, enter: null, backspace: null};
+const title = document.querySelector('#title');                         // display above the game (ex. 'word is too short')
+const endPage = document.querySelector('#end-page')                     // displayed when the game is won/lost
+const infoPage = document.querySelector('#info-page')                   // displays info about the game
+const infoBtn = document.querySelector('#info-btn');                    // shows the info screen
+const infoExit = document.querySelector('#info-exit');                  // hides the info screen
+
+let n = getRandomInt(0, words.length - 1);                              // generate random index to pick a random word
+let correctWord = words[n].toUpperCase();
+console.log('nie dla psa kielbasa');
+let currentInput = '';                                                  // player input / guess
+let colors = [];
+let guess = 0;                                                          // guess counter (0-5)
+keys.enter = document.querySelector('#enter');
+keys.backspace = document.querySelector('#backspace');
+
+// letter grid elements [row][letter]
+let counter = 1;
+for (let i = 0; i < 6; i++) {
+    rows[i] = [];
+    for (let j = 0; j < 5; j++) {
+        rows[i][j] = document.querySelector('.letter:nth-child(' + counter + ')')
+        counter++;
+    }
+}
+
+// keyboard elements
+for (let i = 0; i < letters.length; i++) {
+    keys[letters[i]] = document.querySelector('#' + letters[i]);
+    keys[letters[i]].addEventListener('click', function() { keyPressHandler(letters[i].toUpperCase()); });
+}
+
+/* --- EVENT LISTENERS --- */
+
+keys.enter.addEventListener('click', function() { keyPressHandler('ENTER') });                          // on-screen keyboard click listener
+keys.backspace.addEventListener('click', function() { keyPressHandler('BACKSPACE') });                  // on-screen keyboard click listener
+window.addEventListener('keydown', function(event) { keyPressHandler(event.key.toUpperCase()); });      // keyboard key press listener
+infoBtn.addEventListener('click', () => { infoPage.style.setProperty('display', 'block'); });           // info button press listener
+infoExit.addEventListener('click', () => { infoPage.style.setProperty('display', 'none') });            // info exit button press listener
