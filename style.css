@@ -32,7 +32,7 @@
     --yellow: rgb(194, 194, 107);
     --gray: rgb(75, 75, 75);
 
-    --kb-gap: 10px;
+    --kb-gap: 1vmin;
 }
 
 html,
@@ -130,7 +130,7 @@ body {
     background-color: var(--dark);
     outline: none;
     border: none;
-    border-radius: 10px;
+    border-radius: 1vmin;
     color: var(--light);
     font-weight: bold;
     font-size: 1.6vmax;
@@ -273,7 +273,7 @@ div.info-btn button:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    padding: 40px;
+    padding: 5vmin;
     width: 95%;
     max-width: 1000px;
     height: fit-content;
