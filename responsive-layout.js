@@ -22,5 +22,4 @@ function responsive() {
         }
         key.style.setProperty('height', keyWidth);
     });
-    console.log(Number(parseInt(keyWidth)) * 1.5)
 }

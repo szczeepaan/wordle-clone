@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="wordlist.js"></script>
     <script src="main.js" defer></script>
     <script src="responsive-layout.js" defer></script>
+    <script src="wordlist.js"></script>
 
+    <link rel="icon" href="icon.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
@@ -18,16 +19,13 @@
 
 <body>
 
-    <div class="info-btn">
+    <div class="info-btn no-select">
         <button id="info-btn">
             <span class="material-symbols-outlined">menu</span>
         </button>
     </div>
 
     <div id="info-page">
-        <div class="info-exit">
-            <button id="info-exit">x</button>
-        </div>
         <h3>Wordle Clone</h1>
         <p>original: <a href="https://www.nytimes.com/games/wordle">https://www.nytimes.com/games/wordle</a></p>
         <p>creator: <a href="https://github.com/szczeepaan">szczeepaan</a></p>
@@ -51,11 +49,11 @@
         </div>
     </div>
 
-    <div id="title"></div>
+    <div id="title" class="no-select"></div>
 
     <div id="end-page"></div>
 
-    <div id="wrapper">
+    <div id="wrapper" class="no-select">
         <div id="container">
             <div class="letter"></div>
             <div class="letter"></div>
@@ -95,7 +93,7 @@
         </div>
     </div>
 
-    <div id="keyboard-wrapper">
+    <div id="keyboard-wrapper" class="no-select">
         <div id="keyboard">
             <div class="keyboard-row">
                 <button id="q" class="key">Q</button>
@@ -123,7 +121,9 @@
                 <div class="empty"></div>
             </div>
             <div class="keyboard-row">
-                <button id="enter" class="key long">ENTER</button>
+                <button id="enter" class="key long">
+                    <span class="material-symbols-outlined">done</span>
+                </button>
                 <button id="z" class="key">Z</button>
                 <button id="x" class="key">X</button>
                 <button id="c" class="key">C</button>
@@ -131,7 +131,9 @@
                 <button id="b" class="key">B</button>
                 <button id="n" class="key">N</button>
                 <button id="m" class="key">M</button>
-                <button id="backspace" class="key long">BACK</button>
+                <button id="backspace" class="key long">
+                    <span class="material-symbols-outlined">backspace</span>
+                </button>
             </div>
         </div>
     </div>

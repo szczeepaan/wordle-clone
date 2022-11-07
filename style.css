@@ -44,6 +44,28 @@ body {
     background-color: var(--darker);
 }
 
+* {
+    scrollbar-width: auto;
+    scrollbar-color: var(--medium) none;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--dark);
+    border-radius: 10px;
+}
+
+.no-select {
+    user-select: none;
+}
+
 /* 2. LETTER GRID STYLES */
 #wrapper {
     position: relative;
@@ -56,6 +78,7 @@ body {
     display: grid;
     grid-template-columns: auto auto auto auto auto;
     width: fit-content;
+    max-width: calc(95vw + calc(var(--kb-gap) * 4));
     height: fit-content;
     gap: 5px;
     top: 4vh;
@@ -63,6 +86,8 @@ body {
 
 .letter {
     height: 9vh;
+    max-width: 18vw;
+    max-height: 18vw;
     line-height: calc(9vh - 10px);
     border: 5px solid var(--dark);
     color: var(--light);
@@ -108,7 +133,7 @@ body {
     border-radius: 10px;
     color: var(--light);
     font-weight: bold;
-    font-size: 1.6vw;
+    font-size: 1.6vmax;
     cursor: pointer;
 }
 
@@ -121,6 +146,12 @@ body {
     width: 15%;
 }
 
+.long span {
+    display: flex;
+    font-size: 2.5vmax;
+    justify-content: center;
+}
+
 .empty {
     width: 5%;
 }
@@ -129,14 +160,13 @@ body {
 
 /* 4.1. Title styles */
 #title {
-    display: none;
     position: absolute;
     left: 50%;
     top: 5%;
     transform: translate(-50%);
     opacity: 0;
 
-    width: fit-content;
+    width: max-content;
     padding: 20px 60px;
     background-color: var(--medium);
     color: var(--light);
@@ -144,28 +174,7 @@ body {
     font-family: 'Arial';
     z-index: 1000;
     border-radius: 10px;
-
-    animation-name: titleAnimation;
-    animation-duration: 3000ms;
 }
-
-@keyframes titleAnimation {
-    0% {
-        display: block;
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    70% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        display: none;
-    }
-}
-
 
 /* 4.2. End page styles */
 #end-page {
@@ -203,6 +212,7 @@ body {
     font-weight: bold;
 }
 
+#end-page
 a:hover,
 a:focus {
     text-decoration: underline;
@@ -241,6 +251,21 @@ div.info-btn button:hover {
     cursor: pointer;
 }
 
+@media screen and (max-width: 800px) {
+    div.info-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        top: 1.2vh;
+        right: 0;
+    }
+
+    #container {
+        top: 8vh;
+    }
+}
+
 #info-page {
     position: absolute;
     display: none;
@@ -249,7 +274,8 @@ div.info-btn button:hover {
     transform: translate(-50%, -50%);
     z-index: 1000;
     padding: 40px;
-    width: 40%;
+    width: 95%;
+    max-width: 1000px;
     height: fit-content;
     max-height: 80%;
     background-color: rgba(12, 12, 12, 0.9);
@@ -257,40 +283,24 @@ div.info-btn button:hover {
     color: var(--light);
     font-family: 'Arial';
     text-align: center;
-    font-size: 2.5vh;
     color: white;
     word-wrap: break-word;
     overflow: auto;
-}
-
-
-* {
-    scrollbar-width: auto;
-    scrollbar-color: var(--medium) none;
-}
-
-*::-webkit-scrollbar {
-    width: 8px;
-}
-
-*::-webkit-scrollbar-track {
-    background: none;
-}
-
-*::-webkit-scrollbar-thumb {
-    background-color: var(--dark);
-    border-radius: 10px;
 }
 
 #info-page h3 {
     margin: 0;
     margin-bottom: 40px;
     padding: 0;
-    font-size: 8vh;
+    font-size: 5vmax;
 }
 
 #info-page a {
     color: var(--light);
+}
+
+#info-page > p {
+    font-size: 25px;
 }
 
 .change-log {
@@ -300,33 +310,11 @@ div.info-btn button:hover {
 }
 
 .change-log h1 {
-    font-size: 3.5vh;
+    font-size: 2rem;
     margin: 0;
 }
 
 .change-log span {
     color: var(--light);
     font-size: 20px;
-}
-
-
-
-.info-exit {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-}
-
-.info-exit button {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: bold;
-    color: var(--light);
-    background: none;
-    border: none;
-    outline: none;
-    font-size: 3vh;
-}
-
-.info-exit button:hover {
-    cursor: pointer;
 }

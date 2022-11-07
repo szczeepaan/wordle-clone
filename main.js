@@ -61,24 +61,29 @@ function getColors(correct, guessed) {
 }
 
 // 1.4 - handle keyboard key press / on-screen keyboard click
-function keyPressHandler(key) {
+function keyPressHandler(key, event) {
     let code = key.charCodeAt(0);
     if ((code >= 65 && code <= 90) && key.length === 1) {
-        title.style.setProperty('display', 'none');
+        titleAnimation.cancel();
         if (currentInput.length < 5) {
             currentInput += key;
             displayLetters();
         }
     }
     else if (key == 'BACKSPACE') {
-        title.style.setProperty('display', 'none');
+        titleAnimation.cancel();
         currentInput = currentInput.slice(0, -1);
         displayLetters();
     }
     else if (key == 'ENTER') {
+        if (event.target.nodeName=='BUTTON' && event.target.type=='') {     // prevent <ENTER> from pressing the most recently clicked on-screen keyboard key
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
         if (currentInput.length < 5) {
             title.innerHTML = "Word is too short";
-            title.style.setProperty('display', 'block');
+            titleAnimation.play();
         }
         else if (availableWords.includes(currentInput.toLowerCase())) {
             colors = getColors(correctWord, currentInput);
@@ -87,10 +92,10 @@ function keyPressHandler(key) {
                 rows[guess][i].style.setProperty('border-color', colors[i]);
                 if (colors[i] == 'var(--yellow)' && !greenLetters.includes(currentInput[i])) {
                     keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
-                    keys[currentInput[i].toLowerCase()].style.setProperty('color', 'var(--darker)');
                 } else if (colors[i] == 'var(--green)' || colors[i] == 'var(--gray)'){
                     keys[currentInput[i].toLowerCase()].style.setProperty('background-color', colors[i]);
                 }
+                keys[currentInput[i].toLowerCase()].style.setProperty('color', 'var(--darker)');
             }
             if (currentInput == correctWord) {          // check if won/ran out of guesses
                 gameEnd('win', guess);
@@ -108,7 +113,7 @@ function keyPressHandler(key) {
         }
         else {
             title.innerHTML = "Not in word list";
-            title.style.setProperty('display', 'block');
+            titleAnimation.play();
         }
     }
 }
@@ -139,13 +144,50 @@ const infoPage = document.querySelector('#info-page')                   // displ
 const infoBtn = document.querySelector('#info-btn');                    // shows the info screen
 const infoExit = document.querySelector('#info-exit');                  // hides the info screen
 
+// title animation
+const titleAnimation = title.animate(
+    [
+        { opacity: 0 },
+        { opacity: 0.25 },
+        { opacity: 0.5 },
+        { opacity: 0.75 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 1 },
+        { opacity: 0.75 },
+        { opacity: 0.5 },
+        { opacity: 0.25 },
+        { opacity: 0 }
+    ],
+    {
+        duration: 2500,
+        iterations: 1
+    }
+);
+
+titleAnimation.cancel();
+
 let n = getRandomInt(0, words.length - 1);                              // generate random index to pick a random word
 let correctWord = words[n].toUpperCase();
-console.log(correctWord);
+console.log('⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄⣀⣀⣀⣀⣀⣀\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⡿⠟⠉⠉⠉⠉⠉⠉⠉⠀⢀⣀⣠⠤⠶⠶⠶⠶⠦⠤⠤⠄⠈⣉⡉⠉⠉⠉⠛⠛⠻⠿⢿⣿⣿⣶⣶⣶⣤⣄\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡿⠋⠀⠀⠀⠀⠀⠀⢀⣤⠖⠛⠉⣁⣠⣤⠤⠴⠶⠶⠶⠤⢤⣤⣀⡀⠀⠀⠀⠀⠉⠉⠉⠉⠉⣀⣀⣀⣤⣍⡙⠻⢿⣶⣤⡀\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⠟⠀⠀⠀⠀⠀⣀⠴⠚⢉⡤⠔⢚⣉⡩⠤⠤⠤⠤⠤⠤⣤⠄⠀⠀⠀⠈⠉⠉⠀⠀⠀⠉⠉⣉⣉⣀⣀⣀⠀⠈⠙⠀⠀⠈⠻⢿⣶⣄\n⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⠏⠀⠀⠀⢀⡴⠊⠁⣠⠞⣉⡤⠞⠋⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⡀⠀⠀⠀⠀⠀⠀⠀⠾⢛⡍⠉⠀⠀⠀⠉⠛⠦⣄⠀⠀⠀⠀⠀⠙⣿⡇\n⠀⠀⠀⠀⠀⠀⠀⢠⣿⠏⠀⠀⠀⠀⠈⠀⠠⠞⢁⡞⠉⠀⠀⠀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⢰⠋⠀⠀⠀⠀⠀⠀⠀⠀⠘⢇⠀⠀⠀⠀⠀⣿⡇\n⠀⠀⠀⠀⠀⢀⣴⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⣠⣶⣿⣿⣿⣿⣿⣿⠿⠿⠿⣶⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⣀⣀⣤⣤⣤⣤⣄⠀⠈⠀⠀⠀⠀⠀⠸⣿⣆\n⠀⠀⠀⢀⣴⣿⣿⣿⣖⠒⠦⢄⡀⠀⠀⣤⣤⡖⢀⣾⣿⣭⣿⣿⣿⣿⣿⣿⣤⣄⡀⠈⠙⣿⣷⠀⠀⠀⠀⢀⣀⡀⣠⣴⣿⣿⣿⣿⣯⣭⣿⣿⣷⠄⢤⣄⣀⣀⣀⣀⠈⠻⣷⣤⡀\n⠀⠀⣴⣿⢟⡿⠁⠀⣀⣤⣶⣶⣾⣶⣤⣈⠀⠚⠉⠉⠉⠉⠁⠀⣀⣴⡆⠉⠉⠛⠿⣿⣶⣿⠿⠀⠀⠀⠀⠘⠿⢿⣿⡿⠿⠛⠋⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⢰⣌⠛⢦⡈⢿⣿\n⠀⣼⡟⢡⡞⠀⢠⣾⡿⠋⠁⠀⣰⡈⠛⠿⣿⣷⣦⣤⣤⣤⣴⣾⠿⠋⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⣀⡀⠀⠀⣠⣶⣶⣶⣶⣶⣄⢹⡇⠙⡆⣿\n⢸⣿⠁⢸⡇⠀⣿⡏⠀⠀⠀⢰⣿⣧⣄⡀⠀⠈⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⢀⢀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣷⣄⡀⠀⠀⠀⠻⢿⣶⣿⣿⠋⣰⡄⠀⠙⠛⠈⡇⠀⡇⣿\n⢸⣿⠀⢸⡇⠀⣿⡄⢠⣤⣶⣿⣿⠛⠻⢿⣷⣤⣄⡀⠀⠀⠀⠀⣀⡤⠤⢤⣤⠾⣴⡿⠿⠿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⣿⣇⡀⠀⢀⣠⠇⢀⢧⣿\n⠘⣿⣇⠈⢇⠀⢿⣷⡈⠉⠁⢹⣿⣄⠀⠀⠀⠙⠻⣿⣿⣶⣤⣀⡀⠀⠀⠀⠀⠀⢿⣧⡀⢶⣶⣾⣶⣶⡄⠀⠀⠀⠀⠀⣴⣿⢿⠿⠳⠦⣀⡀⠀⠀⣠⣿⣿⣧⠀⠈⣁⡤⢾⣿⡿\n⠀⠙⣿⣆⠘⠦⣌⣙⠃⠀⠀⠘⢿⣿⣷⣤⣀⡀⠀⣿⣇⠉⠙⠛⠻⠿⢷⣶⣤⣤⣌⣻⠗⠈⠁⠀⠀⠀⠀⠀⣶⣦⣴⣾⠟⠁⠀⠀⠀⠀⠀⢉⣠⣾⣿⣿⣿⣿⠀⠉⠀⢀⣾⡟\n⠀⠀⠈⢻⣷⣦⣤⠉⠁⠀⠀⠀⠀⠹⣿⣟⠻⢿⣷⣿⣿⣦⣀⠀⠀⠀⠀⠈⢙⣿⠿⠿⠿⣷⣶⣶⣤⣤⣤⣀⣈⣉⣉⣁⣀⣀⣀⣀⣤⣤⣶⠿⠻⣿⡏⢻⣿⣿⡆⠀⠀⣾⡟\n⠀⠀⠀⠀⠙⢿⣷⣄⠀⠀⠀⠀⠀⠀⠙⣿⣦⠀⠀⣿⣿⣿⣿⣿⣶⣶⣤⣀⣾⡿⠀⠀⠀⠀⠀⠈⠉⣿⡏⠉⠛⠛⢻⣿⡟⠛⠋⠉⠉⣿⣧⠀⠀⣿⣇⣸⣿⣿⡇⠀⢸⣿⠁\n⠀⠀⠀⠀⠀⠀⠹⣿⣇⠀⠀⠀⠀⠀⠀⠈⠻⣷⣤⣼⡿⠀⠈⠙⠛⠿⣿⣿⣿⣷⣶⣶⣤⣤⣀⣀⣀⣿⣇⣀⣀⣀⣀⣿⣇⣀⣀⣤⣤⣼⣿⣶⣾⣿⣿⣿⣿⣿⠇⠀⢸⣿\n⠀⠀⠀⠀⠀⠀⠀⢻⣿⣄⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣅⡀⠀⠀⠀⠀⠀⢸⣿⠛⠛⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⢸⣿\n⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣦⣀⠀⠀⢠⣿⠏⠀⠀⠀⠀⠀⠈⢹⣿⠛⠿⠿⠿⠿⣿⣿⣿⡿⣿⣿⣿⣿⢿⣿⡿⢿⣿⢟⣿⡟⠀⠀⢸⣿⡆\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣦⡀⢀⣄⡀⠀⣀⣀⠀⠀⠉⠻⢿⣶⣿⡏⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⣾⡟⠀⠀⢀⣿⡟⠀⣼⣿⠁⢼⣿⣾⡿⠁⠀⠀⠈⣿⡇\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣦⣈⠙⠲⢤⣈⠙⠲⢤⣀⠀⠈⠙⠛⠿⢷⣶⣦⣤⣤⣄⣼⣿⣀⣀⣀⣀⣀⣿⣄⣀⣠⣾⣟⣠⣴⣿⣷⣶⠿⠟⠋⠀⠀⠀⠀⠀⢿⡇\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⣿⣦⣄⡉⠓⠦⢤⣈⠑⠲⢤⣄⡀⠀⠈⠉⠉⠉⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠋⠉⠉⠉⠀⠀⢀⡆⠀⠀⡀⠀⠀⢸⡇\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣶⣤⣀⡈⠉⠓⠶⢤⣉⡛⠶⢤⣀⣀⠀⠀⠀⠈⠉⠉⠉⠘⠒⠒⠒⠀⠀⠀⠀⠀⠀⢀⣠⠴⠋⠀⠀⠀⡇⠀⠀⢸⣿\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠻⣿⣶⣦⣀⠀⠈⠉⠓⠒⠢⠭⣭⣀⣀⠀⠉⠉⠉⠉⠉⠉⠀⠒⠒⠒⠋⠉⠉⠀⠀⠀⣠⡴⠚⠁⠀⠀⢸⣿\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠿⣿⣶⣄⡀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠑⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠋⠁⠀⠀⠀⠀⢀⣾⡿\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⣷⣦⣤⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⡟⠁\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠛⠿⠿⣿⣶⣶⣤⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⡿⠟⠁\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠛⠛⠛⠻⠿⠿⠿⠿⠟⠛⢛⢋⠉⡁');
 let currentInput = '';                                                  // player input / guess
 let colors = [];
 let greenLetters = '';                                                  // string containing letters which are green. used for determining on-screen keyboard key colors
 let guess = 0;                                                          // guess counter (0-5)
+let infoOpen = false;
 keys.enter = document.querySelector('#enter');
 keys.backspace = document.querySelector('#backspace');
 
@@ -162,13 +204,22 @@ for (let i = 0; i < 6; i++) {
 // keyboard elements
 for (let i = 0; i < letters.length; i++) {
     keys[letters[i]] = document.querySelector('#' + letters[i]);
+    keys[letters[i]].tabIndex = '-1';
     keys[letters[i]].addEventListener('click', function() { keyPressHandler(letters[i].toUpperCase()); });
 }
 
 /* --- EVENT LISTENERS --- */
 
-keys.enter.addEventListener('click', function() { keyPressHandler('ENTER') });                          // on-screen keyboard click listener
-keys.backspace.addEventListener('click', function() { keyPressHandler('BACKSPACE') });                  // on-screen keyboard click listener
-window.addEventListener('keydown', function(event) { keyPressHandler(event.key.toUpperCase()); });      // keyboard key press listener
-infoBtn.addEventListener('click', () => { infoPage.style.setProperty('display', 'block'); });           // info button press listener
-infoExit.addEventListener('click', () => { infoPage.style.setProperty('display', 'none') });            // info exit button press listener
+keys.enter.addEventListener('click', function(e) { keyPressHandler('ENTER', e) });                          // on-screen keyboard click listener
+keys.backspace.addEventListener('click', function(e) { keyPressHandler('BACKSPACE', e) });                  // on-screen keyboard click listener
+window.addEventListener('keydown', function(e) { keyPressHandler(e.key.toUpperCase(), e); });               // keyboard key press listener
+infoBtn.addEventListener('click', () => {                                                                   // info button press listener
+    if (infoOpen) {
+        infoPage.style.setProperty('display', 'none');
+        infoOpen = false;
+    }
+    else {
+        infoPage.style.setProperty('display', 'block');
+        infoOpen = true;
+    }
+});
