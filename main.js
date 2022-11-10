@@ -76,10 +76,9 @@ function keyPressHandler(key, event) {
         displayLetters();
     }
     else if (key == 'ENTER') {
-        if (event.target.nodeName=='BUTTON' && event.target.type=='') { // prevent <ENTER> from pressing the most recently clicked on-screen keyboard key
+        if (event.target.nodeName == 'BUTTON') { // prevent <ENTER> from pressing the most recently clicked on-screen keyboard key
             event.preventDefault();
             event.stopPropagation();
-            return false;
         }
         if (currentInput.length < 5) {
             title.innerHTML = "Word is too short";
@@ -212,7 +211,8 @@ for (let i = 0; i < 6; i++) {
 // keyboard elements
 for (let i = 0; i < letters.length; i++) {
     keys[letters[i]] = document.querySelector('#' + letters[i]);
-    keys[letters[i]].tabIndex = '-1';
+    // keys[letters[i]].tabIndex = '-1';
+    keys[letters[i]].addEventListener('focus', () => { blur() });
     keys[letters[i]].addEventListener('click', function() { keyPressHandler(letters[i].toUpperCase()); });
 }
 
