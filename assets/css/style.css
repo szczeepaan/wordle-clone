@@ -7,6 +7,7 @@
         4.1. Title styles
         4.2. End page styles
         4.3. Info page styles
+        4.4. Settings page styles
 
  --- TABLE OF CONTENTS --- */
 
@@ -22,15 +23,20 @@
 }
 
 :root {
-    --darker: rgb(14, 24, 24);
-    --dark: rgb(32, 58, 58);
-    --medium: rgb(50, 99, 99);
-    --title-bg: rgba(50, 99, 99, 0.5);
-    --light: #9fc1c1;
+    --background: #0e1818;
+    --letters: #9fc1c1;
+    --letters-border: #203a3a;
+    --keyboard-keys: #203a3a;
+    --keyboard-text: #9fc1c1;
+    --buttons: #326363;
+    --text: #ffffff;
+    --high-text: #9fc1c1;
+    --title-text: #9fc1c1;
+    --title-background: #326363;
 
-    --green: rgb(85, 150, 85);
-    --yellow: rgb(194, 194, 107);
-    --gray: rgb(75, 75, 75);
+    --green: #559655;
+    --yellow: #c2c26b;
+    --gray: #4b4b4b;
 
     --kb-gap: 1vmin;
 }
@@ -41,12 +47,12 @@ body {
     padding: 0;
     height: 100%;
     width: 100%;
-    background-color: var(--darker);
+    background-color: var(--background);
 }
 
 * {
     scrollbar-width: auto;
-    scrollbar-color: var(--medium) none;
+    scrollbar-color: var(--buttons) none;
 }
 
 *::-webkit-scrollbar {
@@ -58,7 +64,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--dark);
+    background-color: var(--keyboard-keys);
     border-radius: 10px;
 }
 
@@ -89,8 +95,8 @@ body {
     max-width: 18vw;
     max-height: 18vw;
     line-height: calc(9vh - 10px);
-    border: 5px solid var(--dark);
-    color: var(--light);
+    border: 5px solid var(--letters-border);
+    color: var(--letters);
     font-family: 'Arial';
     font-weight: bold;
     text-align: center;
@@ -127,18 +133,18 @@ body {
 .key {
     width: 10%;
     max-width: 10vh;
-    background-color: var(--dark);
+    background-color: var(--keyboard-keys);
     outline: none;
     border: none;
     border-radius: 1vmin;
-    color: var(--light);
+    color: var(--keyboard-text);
     font-weight: bold;
     font-size: 1.6vmax;
     cursor: pointer;
 }
 
 .key:hover {
-    opacity: .3;
+    opacity: 0.3;
     transition: 150ms ease-in-out;
 }
 
@@ -168,8 +174,8 @@ body {
 
     width: max-content;
     padding: 20px 60px;
-    background-color: var(--medium);
-    color: var(--light);
+    background-color: var(--title-background);
+    color: var(--title-text);
     font-size: 25px;
     font-family: 'Arial';
     z-index: 1000;
@@ -192,7 +198,7 @@ body {
     min-height: 40%;
     background-color: rgba(12, 12, 12, 0.9);
     box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
-    color: white;
+    color: var(--text);
     font-family: arial;
     text-align: center;
     font-size: 40px;
@@ -203,13 +209,13 @@ body {
 }
 
 #end-page span {
-    color: var(--green);
+    color: var(--high-text);
     font-weight: bold;
 }
 
 #end-page a {
     text-decoration: none;
-    color: var(--light);
+    color: var(--high-text);
     font-weight: bold;
 }
 
@@ -220,52 +226,38 @@ a:focus {
 }
 
 /* 4.3. Info page styles */
-div.info-btn {
+.menu {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    display: flex;
+    flex-direction: column;
     font-size: 3vh;
     right: 30px;
     top: 20px;
     padding: 5px;
 }
 
-div.info-btn button {
+.menu button {
     position: relative;
-    height: 100%;
-    width: 100%;
     z-index: 1000;
     font-family: 'Roboto Mono', monospace;
-    color: var(--medium);
+    color: var(--buttons);
     border: none;
     outline: none;
     background: none;
     line-height: 34px;
 }
 
-div.info-btn span {
+.menu span {
     font-size: 4vh;
 }
 
-div.info-btn:hover,
-div.info-btn button:hover {
+/* .menu:hover, */
+.menu button:hover {
     cursor: pointer;
+    filter: brightness(55%);
 }
 
-@media screen and (max-width: 800px) {
-    div.info-btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        top: 1.2vh;
-        right: 0;
-    }
 
-    #container {
-        top: 8vh;
-    }
-}
 
 #info-page {
     position: absolute;
@@ -281,10 +273,9 @@ div.info-btn button:hover {
     max-height: 80%;
     background-color: rgba(12, 12, 12, 0.9);
     box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
-    color: var(--light);
+    color: var(--text);
     font-family: 'Arial';
     text-align: center;
-    color: white;
     word-wrap: break-word;
     overflow: auto;
 }
@@ -297,7 +288,7 @@ div.info-btn button:hover {
 }
 
 #info-page a {
-    color: var(--light);
+    color: var(--high-text);
 }
 
 #info-page > p {
@@ -316,6 +307,125 @@ div.info-btn button:hover {
 }
 
 .change-log span {
-    color: var(--light);
+    color: var(--high-text);
     font-size: 20px;
+}
+
+/* 4.4. Settings page styles */
+#settings-page {
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 5vmin;
+    width: 95%;
+    max-width: 1000px;
+    height: fit-content;
+    max-height: 80%;
+    background-color: rgba(12, 12, 12, 0.9);
+    box-shadow: 8px 8px 24px 0px rgb(0, 0, 0);
+    color: var(--light);
+    font-family: 'Arial';
+    color: var(--text);
+    word-wrap: break-word;
+    overflow: auto;
+}
+
+#settings-page h1 {
+    font-size: 3vmax;
+    margin: 0;
+    text-align: center;
+}
+
+#settings-page h2 {
+    font-size: 1.5vmax;
+    color: var(--high-text);
+}
+
+#color-theme, #custom-theme {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 20px;
+}
+
+#color-theme button {
+    width: calc(20% - 20px);
+    height: 40px;
+    min-width: 150px;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+#color-theme button span {
+    color: var(--text);
+    mix-blend-mode: difference;
+}
+
+#color-theme button:hover { cursor: pointer; }
+
+#custom-theme div {
+    display: flex;
+    flex-direction: column;
+    width: calc(25% - 20px);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 75px;
+    border: none;
+    cursor: pointer;
+
+    background-color: transparent;
+    cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch {
+    border-radius: 15px;
+    border: 2px solid rgb(29, 29, 29);
+}
+input[type="color"]::-moz-color-swatch {
+    border-radius: 15px;
+    border: 2px solid rgb(29, 29, 29);
+}
+
+footer {
+    position: fixed;
+    bottom: 1%;
+    left: 50%;
+    transform: translate(-50%);
+    font-family: 'Arial';
+    font-size: 12px;
+    color: var(--keyboard-keys);
+}
+
+@media screen and (max-width: 1000px) {
+    .menu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        top: 1.2vh;
+        right: 0;
+        gap: 10%;
+    }
+
+    #container {
+        top: 8vh;
+    }
+
+    #custom-theme div {
+        width: calc(50% - 20px);
+    }
 }
